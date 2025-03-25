@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dados Cadastrais - GET</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgb(255, 214, 224);
+            margin: 0;
+            padding: 0;
+        }
+
+        center {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #D75C8B;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            color: #D75C8B;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 1.1rem;
+            color: #D75C8B;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            margin-right: 20px;
+        }
+
+        a:hover {
+            color: #C04A73;
+        }
+
+        .links-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <center>
+        <h1>Dados Cadastrais - GET</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Idade</th>
+                    <th>CPF</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-corpo"></tbody>
+        </table>
+    </center>
+
+    <div class="links-container">
+        <a href="delete.html">Delete</a>
+        <a href="index.html">Post</a>
+        <a href="put.html">Put</a>
+    </div>
+
+    <script>
+        fetch('pessoas')
+            .then(response => response.json())
+            .then(data => {
+                const tabela = document.getElementById('tabela-corpo');
+                data.forEach((objeto) => {
+                    const linha = `<tr>
+                        <td>${objeto.id}</td>
+                        <td>${objeto.nome}</td>
+                        <td>${objeto.idade}</td>
+                        <td>${objeto.cpf}</td>
+                    </tr>`;
+                    tabela.innerHTML += linha;
+                })
+            });
+    </script>
+</body>
+</html>

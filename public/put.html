@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário PUT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgb(255, 214, 224);
+            margin: 0;
+            padding: 0;
+        }
+
+        center {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #D75C8B;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: #333;
+            font-size: 1.2rem;
+        }
+
+        label {
+            font-size: 1rem;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 95%;
+            padding: 10px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        input[type="button"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.1rem;
+            background-color: #D75C8B;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="button"]:hover {
+            background-color: #C04A73;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 1.1rem;
+            color: #D75C8B;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            margin-right: 20px;
+        }
+
+        a:hover {
+            color: #C04A73;
+        }
+
+        .links-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <center>
+        <h1>Formulário PUT - Atualizar</h1>
+        <form>
+            <h3>PUT</h3>
+            <label>ID:</label>
+            <input type="text" id="id" readonly><br>
+            <label>Nome:</label>
+            <input type="text" id="nomeAtualizar">
+            <br>
+            <label>Idade:</label>
+            <input type="text" id="idadeAtualizar">
+            <br>
+            <label>CPF:</label>
+            <input type="text" id="cpfAtualizar" placeholder="Digite o CPF para busca">
+            <br>
+            <input type="button" onclick="buscarDados()" value="Buscar">
+            <input type="button" onclick="atualizarDados()" value="Atualizar">
+        </form>
+    </center>
+
+    <div class="links-container">
+        <a href="delete.html">Delete</a>
+        <a href="get.html">Get</a>
+        <a href="index.html">Post</a>
+    </div>
+
+    <script>
+        // GET
+        function buscarDados() {
+            const cpf = document.getElementById('cpfAtualizar').value;
+            fetch('pessoas', {
+                method: 'GET'
+            })
+            .then(response => response.json())
+            .then(data => {
+                const pessoaEncontrada = data.find(pessoa => pessoa.cpf === cpf);
+
+                if (pessoaEncontrada) {
+                    document.getElementById('nomeAtualizar').value = pessoaEncontrada.nome;
+                    document.getElementById('idadeAtualizar').value = pessoaEncontrada.idade;
+                    document.getElementById('cpfAtualizar').value = pessoaEncontrada.cpf;
+                    document.getElementById('id').value = pessoaEncontrada.id;
+                } else {
+                    alert('Pessoa não encontrada!');
+                }
+            })
+        }
+
+        // PUT
+        function atualizarDados() {
+            const id = document.getElementById('id').value;
+            const nome = document.getElementById('nomeAtualizar').value;
+            const idade = document.getElementById('idadeAtualizar').value;
+            const cpf = document.getElementById('cpfAtualizar').value;
+
+            fetch(`pessoas/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nome: nome, idade: idade, cpf: cpf })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('id').value = '';
+                document.getElementById('nomeAtualizar').value = '';
+                document.getElementById('idadeAtualizar').value = '';
+                document.getElementById('cpfAtualizar').value = '';
+            });
+        }
+    </script>
+</body>
+</html>
